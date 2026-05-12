@@ -145,7 +145,20 @@ export default function SignIn() {
         if (data.user) await checkProfileAndRedirect(data.user.id);
       }
     } catch (error: any) {
-      toast({ title: isSignUp ? 'Sign-up failed' : 'Sign-in failed', description: error.message || 'Authentication failed.', variant: 'destructive' });
+      console.error('Auth error:', error);
+      let description = error.message || 'Authentication failed.';
+      
+      if (description.toLowerCase().includes('rate limit exceeded')) {
+        description = "System is temporarily rate-limited for security. Please wait a few minutes before trying again.";
+      } else if (description.toLowerCase().includes('email rate limit')) {
+        description = "Email service is temporarily unavailable (limit: 3/hour on free tier). Please try again later, or if you are the administrator, disable 'Confirm Email' in the Supabase dashboard.";
+      }
+      
+      toast({ 
+        title: isSignUp ? 'Sign-up failed' : 'Sign-in failed', 
+        description: description, 
+        variant: 'destructive' 
+      });
     } finally { setLoading(false); }
   };
 
@@ -198,7 +211,16 @@ export default function SignIn() {
       toast({ title: 'Welcome, Teacher!', description: 'Your profile has been created.' });
       navigate('/teacher/dashboard', { replace: true });
     } catch (err: any) {
-      toast({ title: 'Error', description: err.message, variant: 'destructive' });
+      console.error('Teacher sign-up error:', err);
+      let description = err.message || 'Authentication failed.';
+      
+      if (description.toLowerCase().includes('rate limit exceeded')) {
+        description = "System is temporarily rate-limited for security. Please wait a few minutes before trying again.";
+      } else if (description.toLowerCase().includes('email rate limit')) {
+        description = "Email service is temporarily unavailable due to high demand. Please try again in an hour.";
+      }
+      
+      toast({ title: 'Error', description: description, variant: 'destructive' });
     } finally { setLoading(false); }
   };
 

@@ -1,4 +1,4 @@
-﻿ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'student';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'student';
 
 CREATE TABLE IF NOT EXISTS public.teacher_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS public.homework_assignments (
+CREATE TABLE IF NOT EXISTS public.homework_assignments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     teacher_id UUID REFERENCES public.teacher_profiles(id) ON DELETE CASCADE NOT NULL,
     class_name TEXT, -- Optional: if null, applies to all classes
