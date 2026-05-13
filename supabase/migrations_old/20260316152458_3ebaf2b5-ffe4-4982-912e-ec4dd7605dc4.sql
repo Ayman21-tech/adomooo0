@@ -117,9 +117,9 @@ CREATE POLICY "Users can update own received messages" ON public.teacher_student
 ALTER PUBLICATION supabase_realtime ADD TABLE public.teacher_student_messages;
 
 -- Storage buckets
-INSERT INTO storage.buckets (id, name, public) VALUES ('homework-attachments', 'homework-attachments', true);
-INSERT INTO storage.buckets (id, name, public) VALUES ('chat-media', 'chat-media', true);
-INSERT INTO storage.buckets (id, name, public) VALUES ('copy-checker', 'copy-checker', true);
+INSERT INTO storage.buckets (id, name, public) VALUES ('homework-attachments', 'homework-attachments', true) ON CONFLICT (id) DO NOTHING;
+INSERT INTO storage.buckets (id, name, public) VALUES ('chat-media', 'chat-media', true) ON CONFLICT (id) DO NOTHING;
+INSERT INTO storage.buckets (id, name, public) VALUES ('copy-checker', 'copy-checker', true) ON CONFLICT (id) DO NOTHING;
 
 -- Storage RLS
 CREATE POLICY "Authenticated users can upload homework attachments" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'homework-attachments');
