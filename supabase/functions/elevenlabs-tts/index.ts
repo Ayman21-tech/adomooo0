@@ -35,9 +35,9 @@ serve(async (req) => {
     // eleven_multilingual_v2 has the best Bengali/Bangla support
     const modelId = 'eleven_multilingual_v2';
 
-    // Voice selection: Always use "Raju" (eyVoIoi3vo6sJoHOKgAc)
-    // Natural and warm voice — works great in both English and Bangla
-    const selectedVoiceId = voiceId || 'eyVoIoi3vo6sJoHOKgAc';
+    // Voice selection: Always use "Sarah" (EXAVITQu4vr4xnSDxMaL)
+    // Pre-made voice that works great on Free Tier for both English and Bangla
+    const selectedVoiceId = voiceId || 'EXAVITQu4vr4xnSDxMaL';
 
     // For Bangla: tuned for natural, clear Bengali pronunciation
     // Lower stability allows more natural intonation; higher similarity preserves voice character
