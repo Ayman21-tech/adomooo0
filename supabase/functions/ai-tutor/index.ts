@@ -661,22 +661,22 @@ The student has not uploaded textbook pages for this subject.
     });
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again in a moment.' }), {
-          status: 429,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: 'AI credits exhausted. Please try again later.' }), {
-          status: 402,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
       const errorText = await response.text();
-      console.error('AI gateway error:', response.status, errorText);
-      return new Response(JSON.stringify({ error: 'Failed to get AI response' }), {
-        status: 500,
+      console.error(`Gemini API Error (${response.status}):`, errorText);
+      
+      let errorMessage = 'The AI is currently unavailable. Please try again later.';
+      if (response.status === 401 || response.status === 403) {
+        errorMessage = 'Authentication failed with Google AI. Please verify your API key in Supabase secrets.';
+      } else if (response.status === 429) {
+        errorMessage = 'Rate limit exceeded for Google AI. Please try again in a moment.';
+      }
+
+      return new Response(JSON.stringify({ 
+        error: errorMessage,
+        status: response.status,
+        details: errorText
+      }), {
+        status: response.status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
